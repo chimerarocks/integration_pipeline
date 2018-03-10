@@ -1,0 +1,24 @@
+{
+    "name": "winker/integration-pipeline",
+    "description": "Pacote para criação de microserviços de normalização de dados entre aplicações e o Espelho.",
+    "require-dev": {
+        "orchestra/testbench": "~3.6"
+    },
+    "autoload": {
+        "psr-4": {
+            "Winker\\": "src/Winker"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Test\\": "tests/"
+        }
+    },
+    "authors": [
+        {
+            "name": "João Pedro",
+            "email": "joaopedrodslv@gmail.com"
+        }
+    ],
+    "require": {}
+}
