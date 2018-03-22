@@ -31,5 +31,13 @@
         }
     ],
     "minimum-stability": "dev",
-    "prefer-stable": true
+    "prefer-stable": true,
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Winker\\IntegrationPipeline\\Infrastructure\\IlluminatePackageProvider",
+                "Winker\\IntegrationPipeline\\Infrastructure\\IlluminateIntegrationPipelineProvider"
+            ]
+        }
+    }
 }

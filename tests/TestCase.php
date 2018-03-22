@@ -10,7 +10,7 @@ namespace Test;
 
 use Test\Stubs\StubProvider;
 use Winker\IntegrationPipeline\Infrastructure\Contracts\ServiceContainerContract;
-use Winker\IntegrationPipeline\Infrastructure\Providers\IntegrationPipelineProvider;
+use Winker\IntegrationPipeline\Infrastructure\Providers\IlluminateIntegrationPipelineProvider;
 
 class TestCase extends \Orchestra\Testbench\TestCase
 {
@@ -39,7 +39,7 @@ class TestCase extends \Orchestra\Testbench\TestCase
     protected function getPackageProviders($app)
     {
         return [
-            IntegrationPipelineProvider::class,
+            IlluminateIntegrationPipelineProvider::class,
             TestProvider::class
         ];
     }
