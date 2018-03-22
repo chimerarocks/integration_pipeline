@@ -1,5 +1,5 @@
 {
-    "name": "winker/integration-pipeline",
+    "name": "chimerarocks/integration-pipeline",
     "description": "Pacote para criação de microserviços de normalização de dados entre aplicações e o Espelho.",
     "require": {
         "symfony/psr-http-message-bridge": "^1.0",
