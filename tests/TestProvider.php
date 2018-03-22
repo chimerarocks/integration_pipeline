@@ -16,6 +16,11 @@ class TestProvider extends ServiceProvider
      */
     public function register()
     {
+        $this->app['config']->set('pipeline', [
+            'vendor' => 'test',
+            'endpoint_consumer_strategy' => 'psr'
+        ]);
+
         $this->app->bind(StubProvider::class, function($app) {
             $container = $app->get(ServiceContainerContract::class);
             return new StubProvider($container);
