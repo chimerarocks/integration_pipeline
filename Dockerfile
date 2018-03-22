@@ -16,6 +16,8 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" &&
     php -r "unlink('composer-setup.php');" &&\
     composer install
 
+RUN apt-get install git
+
 
 ENV APACHE_DOCUMENT_ROOT /package
 
