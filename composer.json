@@ -1,0 +1,35 @@
+{
+    "name": "chimerarocks/integration-pipeline",
+    "description": "Pacote para criação de microserviços de normalização de dados entre aplicações e o Espelho.",
+    "require": {
+        "symfony/psr-http-message-bridge": "^1.0",
+        "zendframework/zend-diactoros": "^1.7",
+        "guzzlehttp/guzzle": "~6.0",
+        "winker/integration-util": "dev-master"
+    },
+    "repositories": [{
+        "type": "vcs",
+        "url": "https://bitbucket.org/winker/integration-util.git"
+    }],
+    "require-dev": {
+        "orchestra/testbench": "~3.6"
+    },
+    "autoload": {
+        "psr-4": {
+            "Winker\\": "src/Winker"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Test\\": "tests/"
+        }
+    },
+    "authors": [
+        {
+            "name": "João Pedro",
+            "email": "joaopedrodslv@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
