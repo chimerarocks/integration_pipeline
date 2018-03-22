@@ -13,6 +13,7 @@ use GuzzleHttp\Psr7\Uri;
 use Illuminate\Support\ServiceProvider;
 use Psr\Http\Message\StreamInterface;
 use Psr\Http\Message\UriInterface;
+use Winker\Integration\Util\Http\Client\Driver;
 use Winker\IntegrationPipeline\Domain\Contracts\IntegrationPipelineContract;
 use Winker\IntegrationPipeline\Domain\Pipes\FinishPipe;
 use Winker\IntegrationPipeline\Domain\Pipes\IFinishPipe;
@@ -21,6 +22,7 @@ use Winker\IntegrationPipeline\Domain\Pipes\ITransformPipe;
 use Winker\IntegrationPipeline\Domain\Pipes\ConsumePipe;
 use Winker\IntegrationPipeline\Domain\Pipes\TransformPipe;
 use Winker\IntegrationPipeline\Domain\Services\Consumer\ConsumerChain;
+use Winker\IntegrationPipeline\Domain\Services\Consumer\EndpointConsumerStrategy\DriverConsumer;
 use Winker\IntegrationPipeline\Domain\Services\Consumer\EndpointConsumerStrategy\EndpointConsumerStrategy;
 use Winker\IntegrationPipeline\Domain\Services\Consumer\EndpointConsumerStrategy\PsrClientConsumer;
 use Winker\IntegrationPipeline\Domain\Services\Consumer\IConsumerChain;
@@ -35,6 +37,7 @@ use Winker\IntegrationPipeline\Domain\Services\Request\IUriFactory;
 use Winker\IntegrationPipeline\Domain\Services\Request\RequestFactory;
 use Winker\IntegrationPipeline\Domain\Services\Request\StreamFactory;
 use Winker\IntegrationPipeline\Domain\Services\Request\UriFactory;
+use Winker\IntegrationPipeline\Domain\Services\Vendor\IVendor;
 use Winker\IntegrationPipeline\Domain\Services\Vendor\Mappers\IConsumePropertiesMapper;
 use Winker\IntegrationPipeline\Domain\Services\Vendor\Mappers\ConsumePropertiesMapper;
 use Winker\IntegrationPipeline\Domain\Services\Vendor\Facade\VendorFacade;
@@ -48,7 +51,7 @@ use Winker\IntegrationPipeline\Infrastructure\Contracts\ConfigProviderContract;
 use Winker\IntegrationPipeline\Infrastructure\Contracts\ServiceContainerContract;
 use Winker\IntegrationPipeline\IntegrationPipeline;
 
-class IntegrationPipelineProvider extends ServiceProvider
+class IlluminateIntegrationPipelineProvider extends ServiceProvider
 {
     /**
      * Register any application services.
@@ -58,9 +61,23 @@ class IntegrationPipelineProvider extends ServiceProvider
     public function register()
     {
         $app =& $this->app;
+
         $this->app->singleton(ServiceContainerContract::class, function() use (&$app) {
             return new ServiceContainerAdapter($app);
         });
+        $vendorClass = $this->app['config']['pipeline.vendor'];
+
+        $this->app->bind(IVendor::class, $vendorClass);
+
+        $endpointConsumerStrategy = $this->app['config']['pipeline.endpoint_consumer_strategy'];
+
+        $this->app->bind(EndpointConsumerStrategy::class, PsrClientConsumer::class);
+
+        if ($endpointConsumerStrategy == 'driver') {
+            $driver = $this->app['config']['pipeline.driver'];
+            $this->app->bind(EndpointConsumerStrategy::class, DriverConsumer::class);
+            $this->app->bind(Driver::class, $driver);
+        }
 
         $this->app->singleton(ConfigProviderContract::class, ConfigProviderAdapter::class);
         $this->app->bind(IntegrationPipelineContract::class, IntegrationPipeline::class);
@@ -85,7 +102,6 @@ class IntegrationPipelineProvider extends ServiceProvider
         $this->app->bind(IEndpointPropertyStrategy::class, EndpointPropertyStrategy::class);
         $this->app->bind(IServicePropertyStrategy::class, ServicePropertyStrategy::class);
 
-        $this->app->bind(EndpointConsumerStrategy::class, PsrClientConsumer::class);
 
         $this->app->bind(IConsumerChain::class, ConsumerChain::class);
     }
