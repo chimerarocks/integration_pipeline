@@ -5,7 +5,8 @@
         "symfony/psr-http-message-bridge": "^1.0",
         "zendframework/zend-diactoros": "^1.7",
         "guzzlehttp/guzzle": "~6.0",
-        "winker/integration-util": "dev-master"
+        "winker/integration-util": "dev-master",
+        "laravelista/lumen-vendor-publish": "^2.1"
     },
     "repositories": [{
         "type": "vcs",
