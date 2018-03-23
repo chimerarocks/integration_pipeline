@@ -1,5 +1,7 @@
 <?php
 
+use Winker\IntegrationPipeline\Domain\Services\Vendor\Mappers\ConsumePropertiesMapper;
+
 return [
     'vendor'                        => 'App\Vendor',
 
@@ -17,5 +19,5 @@ return [
      * em caso de o campo 'endpoint_consumer_strategy'
      * for iniciado como 'driver'
      */
-    'driver'                        => ''
+    'driver'                        => '',
 ];
