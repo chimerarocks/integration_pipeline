@@ -38,7 +38,7 @@ class IlluminatePackageProvider extends ServiceProvider
         $this->publishes([
             __DIR__ . '/../pipeline.php'            => $configPath  . '/pipeline.php',
             __DIR__ . '/../Stubs/Vendor.php'        => $appPath     . '/Vendor.php',
-            __DIR__ . '/../Stubs/routes.php.php'    => $routesPath  . '/pipeline.php'
+            __DIR__ . '/../Stubs/routes.php'    => $routesPath  . '/pipeline.php'
         ]);
     }
 }
