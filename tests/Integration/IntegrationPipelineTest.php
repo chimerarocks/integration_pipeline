@@ -8,6 +8,7 @@ use Test\Stubs\Vendors\BasicVendor;
 use Test\TestCase;
 use Winker\IntegrationPipeline\Domain\Contracts\IntegrationPipelineContract;
 use Winker\IntegrationPipeline\Domain\Services\HttpClient\IHttpClient;
+use Winker\IntegrationPipeline\Domain\Services\Routing\Routes;
 use Winker\IntegrationPipeline\Domain\Services\Vendor\Mappers\ConsumePropertiesMapper;
 
 class IntegrationPipelineTest extends TestCase
@@ -27,7 +28,7 @@ class IntegrationPipelineTest extends TestCase
 
         $this->stubProvider->fakeRequest(
           BasicVendor::class,
-          'http://localhost' . ConsumePropertiesMapper::PORTAL_ROUTE,
+          Routes::Portal,
           'GET',
           []
         );

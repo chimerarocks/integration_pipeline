@@ -14,9 +14,9 @@ interface IUriFactory
     const DEFAULT_SCHEME = 'http';
 
     /**
-     * @param $uri
+     * @param string $uri
+     * @param array $queryParams
      * @return UriInterface
-     * @throws InvalidUriFormatException
      */
-    public function make(string $uri): UriInterface;
+    public function make(string $uri, array $queryParams = []): UriInterface;
 }

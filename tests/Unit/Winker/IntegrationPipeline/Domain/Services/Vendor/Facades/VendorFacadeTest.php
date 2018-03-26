@@ -8,6 +8,7 @@ use Test\Stubs\Services\BankAccountService;
 use Test\Stubs\Vendors\BasicVendor;
 use Test\Stubs\Vendors\QueryParamsVendor;
 use Test\TestCase;
+use Winker\IntegrationPipeline\Domain\Services\Routing\Routes;
 use Winker\IntegrationPipeline\Domain\Services\Vendor\Facade\IVendorFacade;
 use Winker\IntegrationPipeline\Domain\Services\Vendor\Mappers\ConsumePropertiesMapper;
 use Winker\IntegrationPipeline\Domain\Services\Vendor\Strategies\IEndpointPropertyStrategy;
@@ -25,7 +26,7 @@ class VendorFacadeTest extends TestCase
     {
         $this->stubProvider->fakeRequest(
             BasicVendor::class,
-            'http://localhost' . ConsumePropertiesMapper::PORTAL_ROUTE,
+            Routes::Portal,
             'GET',
             []
         );
@@ -41,7 +42,7 @@ class VendorFacadeTest extends TestCase
     {
         $this->stubProvider->fakeRequest(
             BasicVendor::class,
-            'http://localhost' . ConsumePropertiesMapper::BANK_ACCOUNTS_ROUTE,
+            Routes::BankAccount,
             'GET',
             []
         );
@@ -60,7 +61,7 @@ class VendorFacadeTest extends TestCase
     {
         $this->stubProvider->fakeRequest(
             QueryParamsVendor::class,
-            'http://localhost' . ConsumePropertiesMapper::PORTAL_ROUTE,
+            Routes::Portal,
             'GET',
             [],
             '',
@@ -80,7 +81,7 @@ class VendorFacadeTest extends TestCase
     {
         $this->stubProvider->fakeRequest(
             BasicVendor::class,
-            'http://localhost' . ConsumePropertiesMapper::PORTAL_ROUTE,
+            Routes::Portal,
             'GET',
             []
         );

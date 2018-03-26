@@ -16,7 +16,7 @@ class QueryParamsVendor extends Vendor
     public function queryParams(ServerRequestInterface $request): array
     {
         return [
-            'userId' => $request->getAttribute('userId')
+            'userId' => 23
         ];
     }
 
@@ -29,11 +29,6 @@ class QueryParamsVendor extends Vendor
     public function condominiosQueryParams(ServerRequestInterface $request)
     {
         return [
-            "ordenacao" => "ST_FANTASIA_COND%20ASC",
-            "apenasOsQueTenhoAcesso" => "1",
-            "somenteCondominiosAtivos" => "1",
-            "itensPorPagina" => "50",
-            "id" => "-1",
             "comDadosFechamento" => "1"
         ];
     }

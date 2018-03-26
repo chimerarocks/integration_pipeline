@@ -67,6 +67,14 @@ class RequestMakerTest extends TestCase
     {
 
         return [
+            [ // query and uri and in queryParams
+                'http://winker.com:8080/test/test?test=1#fragment',
+                'GET',
+                '{"field": "value"}',
+                [
+                    'Content-type' => ['application/json']
+                ]
+            ],
             [ // post json
                 'http://winker.com:8080/test/test?test=1#fragment',
                 'POST',

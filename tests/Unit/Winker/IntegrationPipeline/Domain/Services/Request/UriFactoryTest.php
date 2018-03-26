@@ -13,6 +13,7 @@ class UriFactoryTest extends TestCase
     /**
      * @dataProvider validUrisProvider
      * @param $uri
+     * @param $queryParams
      * @param $expectedScheme
      * @param $expectedHost
      * @param $expectedPort
@@ -23,6 +24,7 @@ class UriFactoryTest extends TestCase
      */
     public function test_can_create_uri(
         $uri,
+        $queryParams,
         $expectedScheme,
         $expectedHost,
         $expectedPort,
@@ -33,7 +35,7 @@ class UriFactoryTest extends TestCase
     {
         /* @var IUriFactory $uriFactory*/
         $uriFactory = $this->container->get(IUriFactory::class);
-        $parsedUri = $uriFactory->make($uri);
+        $parsedUri = $uriFactory->make($uri, $queryParams);
         $this->assertInstanceOf(UriInterface::class, $parsedUri);
         $this->assertEquals($expectedScheme, $parsedUri->getScheme(), "scheme should be equals '$expectedScheme'");
         $this->assertEquals($expectedHost, $parsedUri->getHost(), "host should be equals $expectedHost");
@@ -46,8 +48,19 @@ class UriFactoryTest extends TestCase
     public function validUrisProvider()
     {
         return [
+            [ // uri with query array
+                'winker.com.br/test?id=1#target',
+                ['attr' => 'true'],
+                'http',
+                'winker.com.br',
+                null,
+                '/test',
+                'id=1&attr=true',
+                'target'
+            ],
             [ // uri without scheme should return http scheme as default
                 'winker.com.br/test?id=1#target',
+                [],
                 'http',
                 'winker.com.br',
                 null,
@@ -57,6 +70,7 @@ class UriFactoryTest extends TestCase
             ],
             [ // complete uri
                 'http://winker.com.br/test?id=1#target',
+                [],
                 'http',
                 'winker.com.br',
                 null,
@@ -66,6 +80,7 @@ class UriFactoryTest extends TestCase
             ],
             [ // complete uri + port
                 'http://winker.com.br:8080/test?id=1#target',
+                [],
                 'http',
                 'winker.com.br',
                 '8080',
@@ -75,6 +90,7 @@ class UriFactoryTest extends TestCase
             ],
             [ // complete uri + many query params
                 'http://winker.com.br:123/test?id=1&p1=3&p3=8#target',
+                [],
                 'http',
                 'winker.com.br',
                 '123',
@@ -84,6 +100,7 @@ class UriFactoryTest extends TestCase
             ],
             [ // complete uri + many paths
                 'http://winker.com.br:1234/path1/path2?id=1&p1=3&p3=8#target',
+                [],
                 'http',
                 'winker.com.br',
                 '1234',
@@ -93,6 +110,7 @@ class UriFactoryTest extends TestCase
             ],
             [ // complete uri + slash after path
                 'http://winker.com.br:12345/path1/?id=1&p1=3&p3=8#target',
+                [],
                 'http',
                 'winker.com.br',
                 '12345',
@@ -102,6 +120,7 @@ class UriFactoryTest extends TestCase
             ],
             [ // only scheme and host
                 'http://winker.com.br',
+                [],
                 'http',
                 'winker.com.br',
                 null,
@@ -111,6 +130,7 @@ class UriFactoryTest extends TestCase
             ],
             [ // only scheme, host and port
                 'http://winker.com.br:1',
+                [],
                 'http',
                 'winker.com.br',
                 '1',
@@ -120,6 +140,7 @@ class UriFactoryTest extends TestCase
             ],
             [ // uri without path
                 'http://winker.com.br?id=1#target',
+                [],
                 'http',
                 'winker.com.br',
                 null,
@@ -129,6 +150,7 @@ class UriFactoryTest extends TestCase
             ],
             [ // uri without path with port
                 'http://winker.com.br:8080?id=1#target',
+                [],
                 'http',
                 'winker.com.br',
                 '8080',
@@ -138,6 +160,7 @@ class UriFactoryTest extends TestCase
             ],
             [ // uri without path and fragment with query
                 'http://winker.com.br?id=1',
+                [],
                 'http',
                 'winker.com.br',
                 null,
@@ -147,6 +170,7 @@ class UriFactoryTest extends TestCase
             ],
             [ // uri without path and query with fragment
                 'http://winker.com.br:8080#target',
+                [],
                 'http',
                 'winker.com.br',
                 '8080',

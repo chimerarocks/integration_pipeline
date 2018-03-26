@@ -19,9 +19,9 @@ class RequestFactory implements IRequestFactory
         $this->request = $request;
     }
 
-    public function make(UriInterface $uri, string $method, ?array $headers = [], ?StreamInterface $stream = null, array $queryParams = []): ServerRequestInterface
+    public function make(UriInterface $uri, string $method, ?array $headers = [], ?StreamInterface $stream = null): ServerRequestInterface
     {
-        $this->handleUri($uri, $queryParams);
+        $this->handleUri($uri);
         $this->handleMethod($method);
         $this->handleHeaders($headers);
         $this->handleBody($stream);
@@ -29,10 +29,9 @@ class RequestFactory implements IRequestFactory
         return $this->request;
     }
 
-    private function handleUri(UriInterface $uri, array $queryParams): void
+    private function handleUri(UriInterface $uri): void
     {
         $this->request = $this->request->withUri($uri);
-        $this->request = $this->request->withQueryParams($queryParams);
     }
 
     private function handleMethod(string $method): void

@@ -10,6 +10,7 @@ use Test\Stubs\Vendors\BasicVendor;
 use Test\TestCase;
 use Winker\IntegrationPipeline\Domain\Services\Consumer\IConsumerChain;
 use Winker\IntegrationPipeline\Domain\Services\HttpClient\IHttpClient;
+use Winker\IntegrationPipeline\Domain\Services\Routing\Routes;
 use Winker\IntegrationPipeline\Domain\Services\Vendor\Strategies\IEndpointPropertyStrategy;
 use Winker\IntegrationPipeline\Domain\Services\Vendor\Strategies\IServicePropertyStrategy;
 
@@ -23,7 +24,12 @@ class ConsumerChainTest extends TestCase
     public function test_can_consume_a_service_request()
     {
         $this->stubProvider->bindService('bancos', BankAccountService::class);
-        $this->stubProvider->bindVendor(BasicVendor::class);
+        $this->stubProvider->fakeRequest(
+            BasicVendor::class,
+            Routes::BankAccount,
+            'GET',
+            []
+        );
 
         $property = new \ReflectionProperty(BasicVendor::class, 'bancos');
 
@@ -36,7 +42,7 @@ class ConsumerChainTest extends TestCase
         $servicePropertyStrategy->withProperty($property);
         $result = $consumerChain->consume($servicePropertyStrategy);
 
-        $this->assertEquals($result, ['run' => true]);
+        $this->assertEquals($result, ['collection' => true]);
     }
 
     public function test_can_consume_a_basic_request()
@@ -46,7 +52,12 @@ class ConsumerChainTest extends TestCase
             return $client;
         });
 
-        $this->stubProvider->bindVendor(BasicVendor::class);
+        $this->stubProvider->fakeRequest(
+            BasicVendor::class,
+            '/portal',
+            'GET',
+            []
+        );
 
         $property = new \ReflectionProperty(BasicVendor::class, 'condominios');
 
