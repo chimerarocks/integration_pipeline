@@ -8,7 +8,7 @@ use Winker\IntegrationPipeline\Domain\Services\Vendor\Mappers\IConsumeProperties
 
 class IlluminateRoutesProvider extends ServiceProvider
 {
-    public function register()
+    public function boot()
     {
         $routesPath = '';
         if (function_exists('base_path')) {
