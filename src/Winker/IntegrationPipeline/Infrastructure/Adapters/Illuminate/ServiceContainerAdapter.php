@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Winker\IntegrationPipeline\Infrastructure\Adapters\Illuminate;
 
+use Illuminate\Container\Container;
 use Illuminate\Container\EntryNotFoundException;
 use Illuminate\Foundation\Application;
 use Winker\IntegrationPipeline\Infrastructure\Contracts\ServiceContainerContract;
@@ -14,9 +15,8 @@ class ServiceContainerAdapter implements ServiceContainerContract
      */
     private $app;
 
-    public function __construct(Application &$app)
+    public function __construct(Container &$app)
     {
-
         $this->app =& $app;
     }
 

@@ -3,13 +3,13 @@ declare(strict_types=1);
 
 namespace Winker\IntegrationPipeline\Domain\Services\Vendor\Facade;
 
-use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Winker\IntegrationPipeline\Domain\Services\Request\Facades\RequestMaker\IRequestMaker;
 use Winker\IntegrationPipeline\Domain\Services\RouteMatcher\IRouteMatcher;
 use Winker\IntegrationPipeline\Domain\Services\Vendor\IVendor;
 use Winker\IntegrationPipeline\Domain\Services\Vendor\Mappers\IConsumePropertiesMapper;
 use Winker\IntegrationPipeline\Domain\Services\Vendor\Strategies\IPropertyStrategy;
+use Winker\IntegrationPipeline\Infrastructure\Contracts\ServiceContainerContract;
 
 class VendorFacade implements IVendorFacade
 {
@@ -29,7 +29,7 @@ class VendorFacade implements IVendorFacade
         IConsumePropertiesMapper $consumePropertiesMapper,
         IVendor $vendor,
         IRequestMaker $requestMaker,
-        ContainerInterface $container,
+        ServiceContainerContract $container,
         IRouteMatcher $routeMatcher
     )
     {
