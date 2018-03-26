@@ -18,6 +18,8 @@ class IlluminateRoutesProvider extends ServiceProvider
         {
             $routesPath = $this->app->basePath() . '/routes';
         }
-        require $routesPath . "/pipeline.php";
+        if (file_exists($routesPath . "/pipeline.php")) {
+            require $routesPath . "/pipeline.php";
+        }
     }
 }
