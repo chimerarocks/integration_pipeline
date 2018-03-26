@@ -30,6 +30,8 @@ use Winker\IntegrationPipeline\Domain\Services\HttpClient\GuzzleHttpClient;
 use Winker\IntegrationPipeline\Domain\Services\HttpClient\IHttpClient;
 use Winker\IntegrationPipeline\Domain\Services\Request\Facades\RequestMaker\IRequestMaker;
 use Winker\IntegrationPipeline\Domain\Services\Request\Facades\RequestMaker\RequestMaker;
+use Winker\IntegrationPipeline\Domain\Services\RouteMatcher\IRouteMatcher;
+use Winker\IntegrationPipeline\Domain\Services\RouteMatcher\RouteMatcher;
 use Winker\IntegrationPipeline\Domain\Services\Vendor\Facade\IVendorFacade;
 use Winker\IntegrationPipeline\Domain\Services\Request\IRequestFactory;
 use Winker\IntegrationPipeline\Domain\Services\Request\IStreamFactory;
@@ -102,7 +104,8 @@ class IlluminateIntegrationPipelineProvider extends ServiceProvider
         $this->app->bind(IEndpointPropertyStrategy::class, EndpointPropertyStrategy::class);
         $this->app->bind(IServicePropertyStrategy::class, ServicePropertyStrategy::class);
 
-
         $this->app->bind(IConsumerChain::class, ConsumerChain::class);
+
+        $this->app->bind(IRouteMatcher::class, RouteMatcher::class);
     }
 }

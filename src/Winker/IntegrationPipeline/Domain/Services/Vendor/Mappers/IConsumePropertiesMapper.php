@@ -3,22 +3,26 @@ declare(strict_types=1);
 
 namespace Winker\IntegrationPipeline\Domain\Services\Vendor\Mappers;
 
-
 use ReflectionProperty;
 use Winker\Integration\Util\Model\Translation\Model\BankAccount;
+use Winker\Integration\Util\Model\Translation\Model\BillingUnit;
+use Winker\Integration\Util\Model\Translation\Model\ManagerMandate;
 use Winker\Integration\Util\Model\Translation\Model\Portal;
+use Winker\Integration\Util\Model\Translation\Model\Unit;
+use Winker\Integration\Util\Model\Translation\Model\UserUnit;
 use Winker\Integration\Util\Model\TranslatorDefinition;
+use Winker\IntegrationPipeline\Domain\Services\Routing\Routes;
 use Winker\IntegrationPipeline\Domain\Services\Vendor\Strategies\IPropertyStrategy;
 
 interface IConsumePropertiesMapper
 {
-    const PORTAL_ROUTE = '/portals';
-
-    const BANK_ACCOUNTS_ROUTE = '/bank_accounts';
-
     const MAPPING = [
-        IConsumePropertiesMapper::PORTAL_ROUTE => Portal::class,
-        IConsumePropertiesMapper::BANK_ACCOUNTS_ROUTE => BankAccount::class
+        Routes::Portal              => Portal::class,
+        Routes::BankAccount         => BankAccount::class,
+        Routes::Unit                => Unit::class,
+        Routes::UserUnit            => UserUnit::class,
+        Routes::BillingUnit         => BillingUnit::class,
+        Routes::ManagerMandate      => ManagerMandate::class
     ];
 
     const ANNOTATION_REFERENCE = '@Consume';
@@ -31,3 +35,4 @@ interface IConsumePropertiesMapper
 
     public function getRequestedPropertyTranslator(string $path): TranslatorDefinition;
 }
+

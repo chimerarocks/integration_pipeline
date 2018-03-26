@@ -6,6 +6,7 @@ namespace Winker\IntegrationPipeline\Domain\Services\Vendor\Facade;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Winker\IntegrationPipeline\Domain\Services\Request\Facades\RequestMaker\IRequestMaker;
+use Winker\IntegrationPipeline\Domain\Services\RouteMatcher\IRouteMatcher;
 use Winker\IntegrationPipeline\Domain\Services\Vendor\IVendor;
 use Winker\IntegrationPipeline\Domain\Services\Vendor\Mappers\IConsumePropertiesMapper;
 use Winker\IntegrationPipeline\Domain\Services\Vendor\Strategies\IPropertyStrategy;
@@ -28,11 +29,16 @@ class VendorFacade implements IVendorFacade
         IConsumePropertiesMapper $consumePropertiesMapper,
         IVendor $vendor,
         IRequestMaker $requestMaker,
-        ContainerInterface $container
+        ContainerInterface $container,
+        IRouteMatcher $routeMatcher
     )
     {
         $this->vendor = $vendor;
-        $this->requestedPath = $request->getUri()->getPath();
+        $this->requestedPath = $routeMatcher
+                ->match($request->getUri()->getPath())
+                ->getRoute()
+                ->getName()
+        ;
         $this->consumePropertiesMapper = $consumePropertiesMapper;
         $this->request = $request;
     }

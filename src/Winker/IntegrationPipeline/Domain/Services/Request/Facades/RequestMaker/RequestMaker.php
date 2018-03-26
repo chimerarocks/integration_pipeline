@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace Winker\IntegrationPipeline\Domain\Services\Request\Facades\RequestMaker;
 
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\StreamInterface;
+use Psr\Http\Message\UriInterface;
 use Winker\IntegrationPipeline\Domain\Services\Request\IStreamFactory;
 use Winker\IntegrationPipeline\Domain\Services\Request\IUriFactory;
 use Winker\IntegrationPipeline\Domain\Services\Request\RequestFactory;
@@ -22,13 +24,21 @@ class RequestMaker implements IRequestMaker
      * @var IStreamFactory
      */
     private $streamFactory;
-
+    /**
+     * @var $uri UriInterface
+     */
     private $uri;
-
+    /**
+     * @var $stream StreamInterface
+     */
     private $stream;
-
+    /**
+     * @var $headers array
+     */
     private $headers;
-
+    /**
+     * @var $method string
+     */
     private $method;
     /**
      * @var ServerRequestInterface $request
@@ -54,15 +64,14 @@ class RequestMaker implements IRequestMaker
      * @param string $stream
      * @param array $queryParams
      * @return ServerRequestInterface
-     * @throws \Winker\IntegrationPipeline\Domain\Services\Request\Exceptions\InvalidUriFormatException
      */
     public function make(string $fullUri, string $method, array $headers, ?string $stream = '', array $queryParams = []): ServerRequestInterface
     {
-        $this->createUri($fullUri);
+        $this->createUri($fullUri, $queryParams);
         $this->createStream($stream);
         $this->handleHeaders($headers);
         $this->createRequest($method);
-        $this->handleQueryParams($queryParams);
+
 
         return $this->request;
     }
@@ -70,11 +79,11 @@ class RequestMaker implements IRequestMaker
 
     /**
      * @param string $fullUri
-     * @throws \Winker\IntegrationPipeline\Domain\Services\Request\Exceptions\InvalidUriFormatException
+     * @param array $queryParams
      */
-    private function createUri(string $fullUri): void
+    private function createUri(string $fullUri, array $queryParams): void
     {
-        $this->uri = $this->uriFactory->make($fullUri);
+        $this->uri = $this->uriFactory->make($fullUri, $queryParams);
     }
 
     /**
@@ -117,10 +126,5 @@ class RequestMaker implements IRequestMaker
             $this->headers,
             $this->stream
         );
-    }
-
-    private function handleQueryParams(array $queryParams)
-    {
-        $this->request = $this->request->withQueryParams($queryParams);
     }
 }

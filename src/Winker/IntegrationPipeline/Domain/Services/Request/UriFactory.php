@@ -54,15 +54,16 @@ class UriFactory implements IUriFactory
     }
 
     /**
-     * @param $uri
+     * @param string $uri
+     * @param array $queryParams
      * @return UriInterface
      * @throws InvalidUriFormatException
      */
-    public function make(string $uri): UriInterface
+    public function make(string $uri, array $queryParams = []): UriInterface
     {
         $this->matchAcceptedUriFormat($uri);
         $this->assignMatches();
-        $this->hydrateUri();
+        $this->hydrateUri($queryParams);
 
         return $this->uri;
     }
@@ -93,7 +94,7 @@ class UriFactory implements IUriFactory
         $this->fragment   = $this->matches[11] ?? null;
     }
 
-    private function hydrateUri()
+    private function hydrateUri(array $queryParams = [])
     {
         $this->uri = $this->uri->withScheme($this->scheme);
         $this->uri = $this->uri->withHost($this->host);
@@ -106,12 +107,23 @@ class UriFactory implements IUriFactory
             $this->uri = $this->uri->withPath($this->path);
         }
 
-        if ($this->query) {
+        if ($this->query || count($queryParams)) {
+            $this->hydrateQuery($queryParams);
             $this->uri = $this->uri->withQuery($this->query);
         }
 
         if ($this->fragment) {
             $this->uri = $this->uri->withFragment($this->fragment);
+        }
+    }
+
+    private function hydrateQuery(array $queryParams)
+    {
+        if (count($queryParams)) {
+            foreach($queryParams as $param => $value) {
+                $this->query .= "&$param=$value";
+            }
+            $this->query = ltrim($this->query, '&');
         }
     }
 }
