@@ -52,6 +52,8 @@ class StubProvider
 
     public function fakeRequest(string $className, string $uri, string $method, array $headers, string $stream = '', array $attributes = [])
     {
+        $uri = ltrim($uri, '/');
+        $uri = '/' . $uri;
         $this->bindServerRequest($uri, $method, $headers, $stream, $attributes);
         $this->bindVendor($className);
     }

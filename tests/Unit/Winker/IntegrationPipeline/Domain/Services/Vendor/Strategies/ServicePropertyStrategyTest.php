@@ -7,6 +7,7 @@ use Test\Stubs\Services\BankAccountService;
 use Test\Stubs\Vendors\BasicVendor;
 use Test\TestCase;
 use Winker\IntegrationPipeline\Domain\Contracts\ServiceContract;
+use Winker\IntegrationPipeline\Domain\Services\Routing\Routes;
 use Winker\IntegrationPipeline\Domain\Services\Vendor\Strategies\IServicePropertyStrategy;
 
 class ServicePropertyStrategyTest extends TestCase
@@ -19,7 +20,12 @@ class ServicePropertyStrategyTest extends TestCase
     public function test_can_resolve_a_basic_request()
     {
         $this->stubProvider->bindService('bancos', BankAccountService::class);
-        $this->stubProvider->bindVendor(BasicVendor::class);
+        $this->stubProvider->fakeRequest(
+            BasicVendor::class,
+            Routes::BankAccount,
+            'GET',
+            []
+        );
 
         /**
          * @var IServicePropertyStrategy $servicePropertyStrategy

@@ -5,6 +5,7 @@ namespace Test\Unit\Winker\IntegrationPipeline\Domain\Services\Vendor\Mappers;
 
 use Test\Stubs\Vendors\BasicVendor;
 use Test\TestCase;
+use Winker\IntegrationPipeline\Domain\Services\Routing\Routes;
 use Winker\IntegrationPipeline\Domain\Services\Vendor\Mappers\IConsumePropertiesMapper;
 use Winker\IntegrationPipeline\Domain\Services\Vendor\Strategies\IEndpointPropertyStrategy;
 use Winker\IntegrationPipeline\Domain\Services\Vendor\Strategies\IServicePropertyStrategy;
@@ -24,10 +25,10 @@ class ConsumePropertiesMapperTest extends TestCase
         $routePropertyMapper = $this->container->get(IConsumePropertiesMapper::class);
 
         $requestedPropertyName = $routePropertyMapper
-            ->getRequestedPropertyName(IConsumePropertiesMapper::PORTAL_ROUTE);
+            ->getRequestedPropertyName(Routes::Portal);
 
         $requestedPropertyType = $routePropertyMapper
-            ->getRequestedPropertyStrategy(IConsumePropertiesMapper::PORTAL_ROUTE);
+            ->getRequestedPropertyStrategy(Routes::Portal);
 
         $this->assertEquals('condominios', $requestedPropertyName);
 
@@ -42,10 +43,10 @@ class ConsumePropertiesMapperTest extends TestCase
         $routePropertyMapper = $this->container->get(IConsumePropertiesMapper::class);
 
         $requestedPropertyName = $routePropertyMapper
-            ->getRequestedPropertyName(IConsumePropertiesMapper::BANK_ACCOUNTS_ROUTE);
+            ->getRequestedPropertyName(Routes::BankAccount);
 
         $requestedPropertyType = $routePropertyMapper
-            ->getRequestedPropertyStrategy(IConsumePropertiesMapper::BANK_ACCOUNTS_ROUTE);
+            ->getRequestedPropertyStrategy(Routes::BankAccount);
 
         $this->assertEquals('bancos', $requestedPropertyName);
 
