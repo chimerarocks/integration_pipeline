@@ -11,17 +11,17 @@ class TransformPipe implements ITransformPipe
     /**
      * @var IVendorFacade
      */
-    private $vendorAdapter;
+    private $vendorFacade;
 
-    public function __construct(IVendorFacade $vendorAdapter)
+    public function __construct(IVendorFacade $vendorFacade)
     {
-        $this->vendorAdapter = $vendorAdapter;
+        $this->vendorFacade = $vendorFacade;
     }
 
     public function handle(ServerRequestInterface $request, \Closure $next)
     {
         $data = $request->getAttribute(IConsumePipe::class);
-        $transformedData = $this->vendorAdapter->transformData($data);
+        $transformedData = $this->vendorFacade->transformData($data);
         $request = $request->withAttribute(ITransformPipe::class, $transformedData);
         return $next($request);
     }

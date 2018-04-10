@@ -17,7 +17,7 @@ class VendorFacade implements IVendorFacade
 
     private $consumePropertiesMapper;
 
-    private $requestedPath;
+    private $requestedRoute;
 
     /**
      * @var ServerRequestInterface
@@ -34,10 +34,9 @@ class VendorFacade implements IVendorFacade
     )
     {
         $this->vendor = $vendor;
-        $this->requestedPath = $routeMatcher
+        $this->requestedRoute = $routeMatcher
                 ->match($request->getUri()->getPath())
                 ->getRoute()
-                ->getName()
         ;
         $this->consumePropertiesMapper = $consumePropertiesMapper;
         $this->request = $request;
@@ -51,14 +50,17 @@ class VendorFacade implements IVendorFacade
     public function transformData(array $data)
     {
         $translator = $this->consumePropertiesMapper
-            ->getRequestedPropertyTranslator($this->requestedPath);
+            ->getRequestedPropertyTranslator($this->requestedRoute->getName());
 
-        $translation = $translator->toWinker($data);
-        return $translation;
+        if ($this->requestedRoute->isReadRoute()) {
+            return $translator->toWinker($data);
+        }
+
+        return $translator->toWinkerList($data);
     }
 
     private function getRequestedPropertyStrategy()
     {
-        return $this->consumePropertiesMapper->getRequestedPropertyStrategy($this->requestedPath);
+        return $this->consumePropertiesMapper->getRequestedPropertyStrategy($this->requestedRoute->getName());
     }
 }
